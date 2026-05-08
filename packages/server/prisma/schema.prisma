@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model SysUser {
+  id         Int       @id @default(autoincrement())
+  username   String    @unique @db.VarChar(50)
+  password   String    @db.VarChar(255)
+  nickname   String?   @db.VarChar(50)
+  email      String?   @db.VarChar(100)
+  phone      String?   @db.VarChar(20)
+  avatar     String?   @db.VarChar(255)
+  gender     Int?      @default(0) @db.TinyInt
+  status     Int       @default(1) @db.TinyInt
+  deptId     Int?      @map("dept_id")
+  loginAttempts Int    @default(0) @map("login_attempts")
+  lockedUntil   DateTime? @map("locked_until")
+  createTime DateTime  @default(now()) @map("create_time")
+  updateTime DateTime  @updatedAt @map("update_time")
+
+  dept      SysDept?       @relation(fields: [deptId], references: [id])
+  userRoles SysUserRole[]
+  logs      SysLog[]
+
+  @@map("sys_user")
+}
+
+model SysRole {
+  id         Int      @id @default(autoincrement())
+  roleName   String   @map("role_name") @db.VarChar(50)
+  roleKey    String   @unique @map("role_key") @db.VarChar(50)
+  status     Int      @default(1) @db.TinyInt
+  sort       Int      @default(0)
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  userRoles SysUserRole[]
+  roleMenus SysRoleMenu[]
+
+  @@map("sys_role")
+}
+
+model SysMenu {
+  id            Int      @id @default(autoincrement())
+  menuName      String   @map("menu_name") @db.VarChar(50)
+  parentId      Int?     @default(0) @map("parent_id")
+  menuType      Int      @map("menu_type") @db.TinyInt
+  routePath     String?  @map("route_path") @db.VarChar(200)
+  componentPath String?  @map("component_path") @db.VarChar(200)
+  permission    String?  @db.VarChar(100)
+  icon          String?  @db.VarChar(50)
+  sort          Int      @default(0)
+  isVisible     Int      @default(1) @map("is_visible") @db.TinyInt
+  isCache       Int      @default(0) @map("is_cache") @db.TinyInt
+  isExternal    Int      @default(0) @map("is_external") @db.TinyInt
+  createTime    DateTime @default(now()) @map("create_time")
+  updateTime    DateTime @updatedAt @map("update_time")
+
+  roleMenus SysRoleMenu[]
+
+  @@map("sys_menu")
+}
+
+model SysUserRole {
+  userId Int @map("user_id")
+  roleId Int @map("role_id")
+
+  user SysUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role SysRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@map("sys_user_role")
+}
+
+model SysRoleMenu {
+  roleId Int @map("role_id")
+  menuId Int @map("menu_id")
+
+  role SysRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  menu SysMenu @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, menuId])
+  @@map("sys_role_menu")
+}
+
+model SysDept {
+  id         Int      @id @default(autoincrement())
+  deptName   String   @map("dept_name") @db.VarChar(50)
+  parentId   Int?     @default(0) @map("parent_id")
+  sort       Int      @default(0)
+  leader     String?  @db.VarChar(50)
+  phone      String?  @db.VarChar(20)
+  status     Int      @default(1) @db.TinyInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  users SysUser[]
+
+  @@map("sys_dept")
+}
+
+model SysDict {
+  id         Int      @id @default(autoincrement())
+  dictName   String   @map("dict_name") @db.VarChar(100)
+  dictType   String   @map("dict_type") @db.VarChar(100)
+  dictLabel  String   @map("dict_label") @db.VarChar(100)
+  dictValue  String   @map("dict_value") @db.VarChar(100)
+  sort       Int      @default(0)
+  status     Int      @default(1) @db.TinyInt
+  createTime DateTime @default(now()) @map("create_time")
+  updateTime DateTime @updatedAt @map("update_time")
+
+  @@index([dictType])
+  @@map("sys_dict")
+}
+
+model SysLog {
+  id              Int      @id @default(autoincrement())
+  userId          Int?     @map("user_id")
+  ip              String?  @db.VarChar(50)
+  actionType      String   @map("action_type") @db.VarChar(50)
+  module          String   @db.VarChar(50)
+  description     String?  @db.Text
+  requestParams   String?  @map("request_params") @db.LongText
+  responseResult  String?  @map("response_result") @db.LongText
+  duration        Int      @default(0)
+  createdTime     DateTime @default(now()) @map("created_time")
+
+  user SysUser? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([actionType])
+  @@index([createdTime])
+  @@map("sys_log")
+}

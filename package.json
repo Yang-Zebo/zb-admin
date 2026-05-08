@@ -1,0 +1,21 @@
+{
+  "name": "admin-system",
+  "private": true,
+  "version": "1.0.0",
+  "description": "通用后台管理系统",
+  "scripts": {
+    "dev:client": "pnpm --filter client dev",
+    "dev:server": "pnpm --filter server start:dev",
+    "build:client": "pnpm --filter client build",
+    "build:server": "pnpm --filter server build",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@prisma/adapter-mariadb": "^7.8.0",
+    "mariadb": "^3.5.2"
+  }
+}
