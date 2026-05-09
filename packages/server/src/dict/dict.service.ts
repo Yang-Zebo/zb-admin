@@ -1,3 +1,6 @@
+// ===== 字典管理服务 =====
+// 封装字典数据 CRUD、按类型查询和类型去重
+// 字典系统用于管理可配置的枚举数据（如性别、状态等），前端通过 dictType 获取选项列表
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service.js'
 import { CreateDictDto } from './dto/create-dict.dto.js'

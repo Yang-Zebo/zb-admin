@@ -1,3 +1,5 @@
+// ===== 菜单管理 API 接口 =====
+// 菜单使用树形结构，menuType: 0=目录, 1=菜单页面, 2=按钮
 import request from '../utils/request'
 
 export interface MenuItem {

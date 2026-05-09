@@ -1,12 +1,23 @@
+// ===== Prisma 数据库 Schema =====
+// 定义了 7 张核心业务表及其关联关系：
+// sys_user(用户) → sys_user_role(用户角色关联) → sys_role(角色) → sys_role_menu(角色菜单关联) → sys_menu(菜单)
+// sys_dept(部门) ← sys_user(用户)
+// sys_dict(字典) — 独立的数据字典表
+// sys_log(操作日志) ← sys_user(用户)
+
+// Prisma Client 生成配置 — 输出到 generated/prisma 目录
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
 }
 
+// 数据源配置 — 使用 MySQL 数据库
 datasource db {
   provider = "mysql"
 }
 
+// ======== 用户表 sys_user ========
+// 存储用户基本信息、登录状态、部门关联
 model SysUser {
   id         Int       @id @default(autoincrement())
   username   String    @unique @db.VarChar(50)
@@ -30,6 +41,9 @@ model SysUser {
   @@map("sys_user")
 }
 
+// ======== 角色表 sys_role ========
+// RBAC 权限模型的核心：通过角色关联用户和菜单
+// roleKey 用作权限标识，status: 1=启用 0=停用
 model SysRole {
   id         Int      @id @default(autoincrement())
   roleName   String   @map("role_name") @db.VarChar(50)
@@ -45,6 +59,10 @@ model SysRole {
   @@map("sys_role")
 }
 
+// ======== 菜单表 sys_menu ========
+// 存储系统菜单（目录/页面/按钮）的层级结构
+// menuType: 0=目录, 1=菜单页面, 2=按钮
+// permission 存储权限标识（如 sys:user:add），用于按钮级权限控制
 model SysMenu {
   id            Int      @id @default(autoincrement())
   menuName      String   @map("menu_name") @db.VarChar(50)
@@ -66,6 +84,9 @@ model SysMenu {
   @@map("sys_menu")
 }
 
+// ======== 用户角色关联表 sys_user_role ========
+// 多对多关联表：一个用户可以有多个角色，一个角色下可以有多个用户
+// @@id([userId, roleId])：联合主键，确保同一用户-角色组合唯一
 model SysUserRole {
   userId Int @map("user_id")
   roleId Int @map("role_id")
@@ -77,6 +98,8 @@ model SysUserRole {
   @@map("sys_user_role")
 }
 
+// ======== 角色菜单关联表 sys_role_menu ========
+// 多对多关联表：定义每个角色拥有哪些菜单权限
 model SysRoleMenu {
   roleId Int @map("role_id")
   menuId Int @map("menu_id")
@@ -88,6 +111,9 @@ model SysRoleMenu {
   @@map("sys_role_menu")
 }
 
+// ======== 部门表 sys_dept ========
+// 树形结构：通过 parentId 实现无限层级
+// users SysUser[]：与用户表的一对多关联
 model SysDept {
   id         Int      @id @default(autoincrement())
   deptName   String   @map("dept_name") @db.VarChar(50)
@@ -104,6 +130,10 @@ model SysDept {
   @@map("sys_dept")
 }
 
+// ======== 字典表 sys_dict ========
+// 管理系统中可配置的枚举数据，如性别、状态等
+// dictType + dictValue 构成业务字典的一个选项
+// @@index([dictType])：按类型查询时使用索引加速
 model SysDict {
   id         Int      @id @default(autoincrement())
   dictName   String   @map("dict_name") @db.VarChar(100)
@@ -119,6 +149,9 @@ model SysDict {
   @@map("sys_dict")
 }
 
+// ======== 操作日志表 sys_log ========
+// 记录所有 API 操作日志，由 LogInterceptor 自动写入
+// requestParams/responseResult 使用 LongText 类型存储长文本
 model SysLog {
   id              Int      @id @default(autoincrement())
   userId          Int?     @map("user_id")

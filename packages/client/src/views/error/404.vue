@@ -1,3 +1,6 @@
+<!-- ===== 404 页面不存在 =====
+ 当访问不存在的路由时显示（路由中 /:pathMatch(.*)* 重定向到此页面）
+-->
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 const router = useRouter()

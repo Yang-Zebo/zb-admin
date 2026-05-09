@@ -1,3 +1,5 @@
+// ===== 角色管理 API 接口 =====
+// 角色是 RBAC 权限模型的核心，通过角色关联用户和菜单权限
 import request from '../utils/request'
 
 export interface RoleItem {

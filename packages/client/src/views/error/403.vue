@@ -1,3 +1,6 @@
+<!-- ===== 403 无权限页面 =====
+ 当用户访问没有权限的路由时显示（路由守卫中判断 meta.permission）
+-->
 <script setup lang="ts">
 </script>
 

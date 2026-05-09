@@ -1,3 +1,7 @@
+// ===== 操作日志拦截器 =====
+// 全局拦截器，在 AppModule 中通过 APP_INTERCEPTOR 注册
+// 使用 RxJS 的 tap 操作符在请求成功返回后异步记录操作日志
+// 原理：请求到达 → 记录开始时间 → 执行原逻辑 → 响应返回 → tap 回调写日志
 import {
   Injectable,
   NestInterceptor,

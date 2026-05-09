@@ -1,3 +1,6 @@
+// ===== 部门管理 API 接口 =====
+// 定义部门相关的 TypeScript 类型和请求函数
+// 部门使用树形结构，getDeptList 返回带 children 的完整树
 import request from '../utils/request'
 
 export interface DeptItem {

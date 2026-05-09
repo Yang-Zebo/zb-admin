@@ -1,3 +1,5 @@
+// ===== 字典管理 API 接口 =====
+// 字典系统用于管理可配置的枚举数据，前端通过 dictType 获取对应选项列表
 import request from '../utils/request'
 
 export interface DictItem {

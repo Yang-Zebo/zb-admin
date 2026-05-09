@@ -1,3 +1,10 @@
+<!-- ===== 登录页面 =====
+ 功能：
+ 1. 输入用户名/密码/验证码进行登录
+ 2. 验证码使用 SVG 图形验证码（数学题形式），点击可刷新
+ 3. Enter 键快捷登录
+ 4. 登录成功后跳转到首页
+-->
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'

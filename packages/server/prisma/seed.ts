@@ -1,3 +1,7 @@
+// ===== Prisma 种子数据脚本 =====
+// 用于初始化数据库的默认数据
+// 执行方式：npx prisma db seed（或在 package.json 中配置 prisma.seed）
+// 包含：默认部门、超级管理员用户、角色、菜单树、菜单权限分配、字典数据
 import { PrismaClient } from '../generated/prisma/client.js'
 import { PrismaMariaDb } from '@prisma/adapter-mariadb'
 import bcrypt from 'bcryptjs'
@@ -52,6 +56,7 @@ async function main() {
   console.log('✅ 超级管理员创建完成:', adminUser.username, '(密码: admin123)')
 
   // ==================== 3. 创建角色 ====================
+// 使用 upsert 创建角色：存在则跳过，不存在则创建
   const superAdminRole = await prisma.sysRole.upsert({
     where: { roleKey: 'super_admin' },
     update: {},
@@ -85,7 +90,7 @@ async function main() {
   console.log('✅ 角色分配完成: admin → 超级管理员')
 
   // ==================== 5. 创建菜单树 ====================
-  // 一级目录：系统管理
+  // 一级目录：系统管理（下面的所有管理页面都归属于此目录）
   const systemDir = await prisma.sysMenu.create({
     data: {
       menuName: '系统管理',
@@ -103,7 +108,7 @@ async function main() {
   })
   console.log('✅ 菜单创建完成:', systemDir.menuName)
 
-  // 用户管理
+  // 用户管理（menuType=1 表示菜单页面，包含 routePath 用于前端路由）
   const userMenu = await createMenu({
     menuName: '用户管理',
     parentId: systemDir.id,
@@ -238,6 +243,7 @@ async function main() {
   console.log('   └──────────────────────────────────────────┘')
 }
 
+// MenuInput 接口：createMenu 辅助函数的参数类型
 interface MenuInput {
   menuName: string
   parentId: number

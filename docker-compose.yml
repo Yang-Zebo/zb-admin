@@ -1,38 +1,43 @@
+# ===== Docker 容器编排 =====
+# 使用 docker compose 一键启动开发环境所需的 MySQL 和 Redis 服务
+# 启动命令：docker compose up -d   停止命令：docker compose down
 services:
+  # === MySQL 8.0 数据库 ===
   mysql:
     image: mysql:8.0
     container_name: admin-mysql
-    restart: unless-stopped
+    restart: unless-stopped # 容器异常退出时自动重启
     environment:
-      MYSQL_ROOT_PASSWORD: root123456
-      MYSQL_DATABASE: admin_system
-      MYSQL_CHARSET: utf8mb4
-      MYSQL_COLLATION: utf8mb4_unicode_ci
-      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: root123456 # root 用户密码
+      MYSQL_DATABASE: admin_system # 自动创建的数据库
+      MYSQL_CHARSET: utf8mb4 # 字符集（支持 emoji）
+      MYSQL_COLLATION: utf8mb4_unicode_ci # 排序规则
+      TZ: Asia/Shanghai # 时区设置为上海
     ports:
-      - '3307:3306'
+      - '3307:3306' # 映射到本机 3307 端口（避免与本机 MySQL 冲突）
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql # 数据持久化
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d # 初始化脚本
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --default-time-zone=+08:00
-    healthcheck:
+    healthcheck: # 健康检查，等待 MySQL 完全启动
       test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 10s
       timeout: 5s
       retries: 5
 
+  # === Redis 7 缓存 ===
   redis:
-    image: redis:7-alpine
+    image: redis:7-alpine # alpine 版本体积更小
     container_name: admin-redis
     restart: unless-stopped
     ports:
-      - '6379:6379'
+      - '6379:6379' # 默认 Redis 端口
     volumes:
-      - redis_data:/data
-    command: redis-server --appendonly yes --requirepass redis123456
+      - redis_data:/data # 数据持久化（AOF 模式）
+    command: redis-server --appendonly yes --requirepass redis123456 # AOF 持久化 + 密码认证
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
       interval: 10s
@@ -40,5 +45,5 @@ services:
       retries: 5
 
 volumes:
-  mysql_data:
-  redis_data:
+  mysql_data: # Docker 管理的 MySQL 数据卷
+  redis_data: # Docker 管理的 Redis 数据卷

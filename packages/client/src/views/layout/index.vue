@@ -1,3 +1,11 @@
+<!-- ===== 主布局组件 =====
+ 页面骨架：左侧可折叠菜单栏 + 右侧内容区（顶栏 + 主内容）
+ 核心功能：
+ 1. 侧边栏：从 authStore.menus 获取菜单树，使用 NestedMenu 递归渲染
+ 2. 折叠/展开：通过 isCollapse 控制侧边栏宽度（64px / 220px）
+ 3. 顶栏右侧：用户头像、用户名、退出登录下拉菜单
+ 4. 主内容区：<router-view /> 动态渲染当前路由对应的页面组件
+-->
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
@@ -19,16 +27,18 @@ import {
 const router = useRouter()
 const authStore = useAuthStore()
 
-const isCollapse = ref(false)
-const activeMenu = ref('/dashboard')
+const isCollapse = ref(false) // 侧边栏是否折叠
+const activeMenu = ref('/dashboard') // 当前激活的菜单项
 
 const userInfo = computed(() => authStore.userInfo)
 
+// 从菜单树中筛选根级菜单（parentId 为 0 或 null 的菜单作为一级菜单）
 const treeMenus = computed(() => {
   const allMenus = authStore.menus || []
   return allMenus.filter((m) => !m.parentId || m.parentId === 0)
 })
 
+// 菜单图标映射表：将数据库中存储的图标名字符串映射为实际的 Vue 组件
 const iconMap: Record<string, any> = {
   HomeFilled,
   User,
@@ -39,6 +49,7 @@ const iconMap: Record<string, any> = {
   Document,
 }
 
+// 根据图标名获取对应的组件，找不到时默认使用 Menu 图标
 function getIcon(iconName: string | null) {
   if (!iconName) return Menu
   return iconMap[iconName] || Menu

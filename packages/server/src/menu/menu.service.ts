@@ -1,3 +1,6 @@
+// ===== 菜单管理服务 =====
+// 封装菜单 CRUD 和菜单树构建
+// buildTree 方法将扁平菜单数据转为层级树结构（用于前端侧边栏渲染）
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service.js'
 import { CreateMenuDto } from './dto/create-menu.dto.js'

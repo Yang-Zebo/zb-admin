@@ -1,3 +1,6 @@
+<!-- ===== HelloWorld 示例组件 =====
+ 这是 Vite 创建 Vue 项目时生成的默认示例组件，可以删除或替换为实际内容
+-->
 <script setup lang="ts">
 import { ref } from 'vue'
 import viteLogo from '../assets/vite.svg'

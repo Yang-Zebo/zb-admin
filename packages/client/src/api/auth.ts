@@ -1,3 +1,6 @@
+// ===== 认证相关 API 接口 =====
+// 定义登录、退出、获取权限等接口的请求函数和 TypeScript 类型
+// 所有请求通过统一的 request 实例发送（已配置拦截器和 baseURL）
 import request from '../utils/request'
 
 export interface LoginParams {

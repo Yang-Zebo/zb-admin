@@ -1,3 +1,7 @@
+<!-- ===== 首页仪表盘 =====
+ 显示欢迎信息和系统概览：当前用户、权限数量、系统信息
+ 数据来源：authStore.userInfo（登录时保存的用户信息）和 authStore.permissions（权限列表）
+-->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useAuthStore } from '../../stores/auth'

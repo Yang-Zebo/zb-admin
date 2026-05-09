@@ -1,3 +1,6 @@
+// ===== 部门管理服务 =====
+// 封装部门 CRUD 和部门树构建
+// 删除保护：存在子部门或有用户关联的部门不允许删除
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service.js'
 import { CreateDeptDto } from './dto/create-dept.dto.js'

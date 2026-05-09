@@ -1,3 +1,5 @@
+// ===== 操作日志 API 接口 =====
+// 日志为只读数据，仅提供分页查询接口
 import request from '../utils/request'
 
 export interface LogItem {

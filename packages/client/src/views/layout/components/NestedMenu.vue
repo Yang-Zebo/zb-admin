@@ -1,3 +1,9 @@
+<!-- ===== 递归菜单组件 =====
+ 核心组件：通过自身递归渲染无限层级的菜单结构
+ 原理：组件在自己的 template 中调用自身，传入子菜单数据继续渲染
+ props: menus — 当前层级的菜单数组
+ 使用 <component :is="..."> 动态渲染 Icon 图标
+-->
 <script setup lang="ts">
 import {
   HomeFilled,

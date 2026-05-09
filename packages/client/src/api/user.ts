@@ -1,3 +1,5 @@
+// ===== 用户管理 API 接口 =====
+// 用户 CRUD + 角色关联 + 密码重置 + 状态切换
 import request from '../utils/request';
 
 export interface UserItem {

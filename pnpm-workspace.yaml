@@ -1,5 +1,10 @@
+# ===== pnpm Monorepo 工作空间配置 =====
+# 配置 pnpm workspace，使 packages/* 目录下的所有包共享依赖
+# client 和 server 在 monorepo 中可以互相引用，共用根目录的依赖
 packages:
   - 'packages/*'
+# allowBuilds：允许在依赖安装时构建原生模块的列表
+# 这些包需要在安装时编译原生代码（如 prisma 引擎、文件监听等）
 allowBuilds:
   '@nestjs/core': set this to true or false
   '@parcel/watcher': set this to true or false

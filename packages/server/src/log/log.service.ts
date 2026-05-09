@@ -1,3 +1,5 @@
+// ===== 日志存储服务 =====
+// 负责操作日志的查询和写入
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service.js'
 import { QueryLogDto } from './dto/query-log.dto.js'
