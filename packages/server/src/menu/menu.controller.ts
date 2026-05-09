@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common'
+import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { MenuService } from './menu.service.js'
 import { CreateMenuDto } from './dto/create-menu.dto.js'
@@ -45,10 +36,7 @@ export class MenuController {
 
   @Put(':id')
   @ApiOperation({ summary: '编辑菜单' })
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateMenuDto,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateMenuDto) {
     return this.menuService.update(id, dto)
   }
 

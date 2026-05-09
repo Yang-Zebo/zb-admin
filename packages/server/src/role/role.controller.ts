@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  Query,
-  ParseIntPipe,
-} from '@nestjs/common'
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, ParseIntPipe } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { RoleService } from './role.service.js'
 import { CreateRoleDto } from './dto/create-role.dto.js'
@@ -47,10 +37,7 @@ export class RoleController {
 
   @Put(':id')
   @ApiOperation({ summary: '编辑角色' })
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateRoleDto,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateRoleDto) {
     return this.roleService.update(id, dto)
   }
 
@@ -62,10 +49,7 @@ export class RoleController {
 
   @Put(':id/menus')
   @ApiOperation({ summary: '分配菜单权限' })
-  assignMenus(
-    @Param('id', ParseIntPipe) id: number,
-    @Body('menuIds') menuIds: number[],
-  ) {
+  assignMenus(@Param('id', ParseIntPipe) id: number, @Body('menuIds') menuIds: number[]) {
     return this.roleService.assignMenus(id, menuIds)
   }
 }

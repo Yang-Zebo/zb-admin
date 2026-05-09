@@ -208,15 +208,11 @@ export class AuthService {
 
     // 去重：同一菜单可能被多个角色分配，按 id 去重只保留一份
     const menus = roleMenus.map((rm) => rm.menu)
-    const uniqueMenus = menus.filter(
-      (menu, index, self) => self.findIndex((m) => m.id === menu.id) === index,
-    )
+    const uniqueMenus = menus.filter((menu, index, self) => self.findIndex((m) => m.id === menu.id) === index)
 
     // 提取按钮权限标识（如 sys:user:add、sys:role:delete）
     // permission 字段为空的菜单（如目录、页面）不纳入权限列表
-    const permissions = uniqueMenus
-      .filter((m) => m.permission && m.permission.trim() !== '')
-      .map((m) => m.permission!)
+    const permissions = uniqueMenus.filter((m) => m.permission && m.permission.trim() !== '').map((m) => m.permission!)
 
     // 构建层级菜单树（用于侧边栏渲染）
     const menuTree = this.buildMenuTree(uniqueMenus)

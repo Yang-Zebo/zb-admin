@@ -10,7 +10,8 @@ import { Reflector } from '@nestjs/core' // Reflector 用于读取装饰器元�
 import { IS_PUBLIC_KEY } from '../../common/decorators/public.decorator.js'
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') { // 使用 'jwt' 策略（对应 JwtStrategy）
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  // 使用 'jwt' 策略（对应 JwtStrategy）
   constructor(private reflector: Reflector) {
     super()
   }
@@ -30,7 +31,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') { // 使用 'jwt' 策略（�
   }
 
   // handleRequest：处理认证结果，err 或 user 为 null 时表示认证失败
-  handleRequest(err: any, user: any, info: any) {
+  handleRequest(err: any, user: any) {
     if (err || !user) {
       throw err || new UnauthorizedException('Token 无效或已过期，请重新登录')
     }

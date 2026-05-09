@@ -55,7 +55,7 @@ async function handleLogin() {
     })
     ElMessage.success('登录成功')
     router.push('/')
-  } catch (err: any) {
+  } catch {
     refreshCaptcha()
     form.value.captcha = ''
   } finally {

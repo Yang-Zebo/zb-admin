@@ -2,12 +2,7 @@
 // 全局拦截器，在 AppModule 中通过 APP_INTERCEPTOR 注册
 // 使用 RxJS 的 tap 操作符在请求成功返回后异步记录操作日志
 // 原理：请求到达 → 记录开始时间 → 执行原逻辑 → 响应返回 → tap 回调写日志
-import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler,
-} from '@nestjs/common'
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common'
 import { Observable, tap } from 'rxjs'
 import { Request } from 'express'
 import { LogService } from '../log/log.service.js'
@@ -40,7 +35,7 @@ export class LogInterceptor implements NestInterceptor {
     const startTime = Date.now()
 
     return next.handle().pipe(
-      tap(async (response) => {
+      tap((response) => {
         try {
           const pathParts = url.replace('/api/', '').split('/')
           const moduleKey = pathParts[0] || ''
@@ -53,16 +48,20 @@ export class LogInterceptor implements NestInterceptor {
 
           const duration = Date.now() - startTime
 
-          await this.logService.create({
-            userId,
-            ip: req.ip || req.socket.remoteAddress || '',
-            actionType,
-            module: moduleName,
-            description: `${actionType}${moduleName}`,
-            requestParams: method !== 'GET' ? JSON.stringify(req.body) : '',
-            responseResult: response ? JSON.stringify(response).slice(0, 2000) : '',
-            duration,
-          })
+          void this.logService
+            .create({
+              userId,
+              ip: req.ip || req.socket.remoteAddress || '',
+              actionType,
+              module: moduleName,
+              description: `${actionType}${moduleName}`,
+              requestParams: method !== 'GET' ? JSON.stringify(req.body) : '',
+              responseResult: response ? JSON.stringify(response).slice(0, 2000) : '',
+              duration,
+            })
+            .catch(() => {
+              // 日志写入失败不影响主流程
+            })
         } catch {
           // silently fail
         }

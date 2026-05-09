@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common'
+import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { DeptService } from './dept.service.js'
 import { CreateDeptDto } from './dto/create-dept.dto.js'
@@ -45,10 +36,7 @@ export class DeptController {
 
   @Put(':id')
   @ApiOperation({ summary: '编辑部门' })
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateDeptDto,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateDeptDto) {
     return this.deptService.update(id, dto)
   }
 

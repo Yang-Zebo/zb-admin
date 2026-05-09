@@ -1,11 +1,7 @@
 // ===== 角色管理服务 =====
 // 封装角色 CRUD 和菜单权限分配
 // 关键逻辑：分配菜单时清除所有关联用户的权限缓存
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common'
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service.js'
 import { RedisService } from '../redis/redis.service.js'
 import { CreateRoleDto } from './dto/create-role.dto.js'

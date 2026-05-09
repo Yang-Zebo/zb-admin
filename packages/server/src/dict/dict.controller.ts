@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  Query,
-  ParseIntPipe,
-} from '@nestjs/common'
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, ParseIntPipe } from '@nestjs/common'
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger'
 import { DictService } from './dict.service.js'
 import { CreateDictDto } from './dto/create-dict.dto.js'
@@ -53,10 +43,7 @@ export class DictController {
 
   @Put(':id')
   @ApiOperation({ summary: '编辑字典' })
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateDictDto,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateDictDto) {
     return this.dictService.update(id, dto)
   }
 

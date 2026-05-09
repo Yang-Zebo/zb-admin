@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Menu } from '@element-plus/icons-vue'
 import {
-  Fold,
-  Expand,
   HomeFilled,
   User,
   Avatar,

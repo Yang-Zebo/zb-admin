@@ -3,22 +3,22 @@
 // 1. 注册所有子模块（用户、角色、菜单、部门、字典、日志）
 // 2. 配置全局守卫（JWT 认证）和全局拦截器（操作日志）
 // 3. 加载环境变量配置文件
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { PrismaModule } from './prisma/prisma.module.js';
-import { RedisModule } from './redis/redis.module.js';
-import { AuthModule } from './auth/auth.module.js';
-import { UserModule } from './user/user.module.js';
-import { MenuModule } from './menu/menu.module.js';
-import { RoleModule } from './role/role.module.js';
-import { DeptModule } from './dept/dept.module.js';
-import { LogModule } from './log/log.module.js';
-import { DictModule } from './dict/dict.module.js';
-import { LogInterceptor } from './log/log.interceptor.js';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard.js';
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
+import { AppController } from './app.controller.js'
+import { AppService } from './app.service.js'
+import { PrismaModule } from './prisma/prisma.module.js'
+import { RedisModule } from './redis/redis.module.js'
+import { AuthModule } from './auth/auth.module.js'
+import { UserModule } from './user/user.module.js'
+import { MenuModule } from './menu/menu.module.js'
+import { RoleModule } from './role/role.module.js'
+import { DeptModule } from './dept/dept.module.js'
+import { LogModule } from './log/log.module.js'
+import { DictModule } from './dict/dict.module.js'
+import { LogInterceptor } from './log/log.interceptor.js'
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard.js'
 
 @Module({
   imports: [
